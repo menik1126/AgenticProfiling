@@ -1,0 +1,24 @@
+experiment: greenllm-7b-longctx-27k-local-3090
+mode: GreenLLM
+service_container: greenllm-prefillsplit-7b
+endpoint: http://127.0.0.1:8000/v1/chat/completions
+model: Qwen/Qwen2.5-Coder-7B-Instruct
+trace: /home/shenhaojia/energy/defaultnv-7b/data/traces/longctx_27k_02qps.jsonl
+prefill_profile: /home/shenhaojia/energy/greenllm-profile-7b/results/20260902T125826Z/prefill_models.json
+decode_profile: /home/shenhaojia/energy/greenllm-profile-7b/results/decode-20260902T133755Z/decode_models.json
+power_interval_ms: 20
+max_inflight: 2048
+controller:
+  frequencies_mhz: [600, 900, 1050, 1125, 1200, 1275, 1350, 1425, 1500, 1575, 1650, 1800, 1950]
+  prefill_short_gpus: [4, 5]
+  prefill_long_gpus: [6, 7]
+  decode_gpus: [0, 1, 2, 3]
+  prefill_threshold_tokens: 27000
+  short_ttft_slo_ms: 2000
+  long_ttft_slo_ms: 2000
+  prefill_slo_margin: 0.85
+  tbt_slo_ms: 100
+  tbt_lower_margin: 0.65
+  control_interval_ms: 20
+  decode_window_ms: 200
+  notes: both pools carry long prompts by alternating 27000/27001 tokens around the routing threshold; reuse the measured 27622-token profile

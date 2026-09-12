@@ -1,0 +1,11 @@
+**/__pycache__/
+*.py[cod]
+**/logs/
+**/results/
+**/figures/
+**/queue-runs/
+**/artifacts/
+/defaultnv-7b/data/
+/vendor
+/.build-cache
+/.venv-plots

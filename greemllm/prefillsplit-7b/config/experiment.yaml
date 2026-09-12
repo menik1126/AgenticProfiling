@@ -1,0 +1,31 @@
+experiment: greenllm-prefillsplit-7b-local-8gpu
+paper: arXiv:2508.16449v1
+mode: PrefillSplit
+duration_s: 1800
+power_sample_interval_ms: 20
+model:
+  id: Qwen/Qwen2.5-Coder-7B-Instruct
+  revision: c03e6d358207e414f1eca0bb1891e29f1db0e242
+  dtype: bfloat16
+hardware:
+  gpu_count: 8
+  gpu_model: detect_at_run
+  compute_capability: detect_at_build_and_run
+topology:
+  prefill_workers: 2
+  prefill_tensor_parallel_size: 2
+  decode_workers: 4
+  decode_tensor_parallel_size: 1
+routing:
+  policy: fixed_prompt_length_split
+  short_medium_max_input_tokens: 1024
+  expected_prefill_workers: 2
+slo:
+  short_medium_ttft_ms: 400
+  long_ttft_ms: 2000
+  tbt_p95_ms: 100
+software:
+  dynamo_tag: v0.3.1
+  dynamo_commit: e1172957039782d6163404f889ee1020a10c35eb
+  tensorrt_llm_commit: 137fe35539ea182f1495f5021bfda97c729e50c3
+

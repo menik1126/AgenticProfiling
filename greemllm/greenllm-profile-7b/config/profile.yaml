@@ -1,0 +1,26 @@
+experiment: greenllm-offline-profile-7b-local-3090
+service_container: greenllm-prefillsplit-7b
+endpoint: http://127.0.0.1:8000/v1/chat/completions
+model: Qwen/Qwen2.5-Coder-7B-Instruct
+reference_sm_frequency_mhz: 1950
+sm_frequencies_mhz: [600, 900, 1200, 1500, 1800, 1950]
+power_sample_interval_ms: 20
+idle_sample_duration_s: 3
+settle_after_clock_change_s: 2
+request_retries: 3
+request_retry_delay_s: 2
+gpu_groups:
+  prefill: [4, 5, 6, 7]
+prefill_latency:
+  prompt_lengths: [128, 512, 1024, 2048, 4096, 8192]
+  warmup_repetitions: 2
+  repetitions: 5
+  output_tokens: 1
+prefill_power:
+  pools:
+    - {name: short_medium, prompt_length: 1024, gpu_ids: [4, 5]}
+    - {name: long, prompt_length: 2048, gpu_ids: [6, 7]}
+  warmup_repetitions: 2
+  concurrency: 8
+  duration_s: 10
+  output_tokens: 1

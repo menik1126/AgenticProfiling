@@ -1,0 +1,4 @@
+{
+  "threshold_tokens": 27000,
+  "expected_prefill_workers": 2
+}

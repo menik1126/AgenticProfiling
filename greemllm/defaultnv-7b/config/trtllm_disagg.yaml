@@ -1,0 +1,32 @@
+hostname: localhost
+port: 8080
+trust_remote_code: false
+backend: pytorch
+
+context_servers:
+  num_instances: 1
+  tensor_parallel_size: 2
+  max_num_tokens: 32768
+  max_batch_size: 16
+  enable_chunked_prefill: false
+  kv_cache_config:
+    # Keep headroom for 32K prefill activations on 24 GiB RTX 3090 cards.
+    free_gpu_memory_fraction: 0.75
+  disable_overlap_scheduler: true
+  use_cuda_graph: false
+  urls:
+    - localhost:8001
+
+generation_servers:
+  num_instances: 1
+  tensor_parallel_size: 1
+  max_num_tokens: 256
+  max_batch_size: 256
+  kv_cache_config:
+    # RTX 3090 needs room for the disaggregated KV-transfer buffers and a
+    # full 32K sequence arriving from the prefill worker.
+    free_gpu_memory_fraction: 0.60
+  disable_overlap_scheduler: false
+  use_cuda_graph: true
+  urls:
+    - localhost:8002

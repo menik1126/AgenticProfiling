@@ -1,0 +1,26 @@
+Frontend:
+  served_model_name: Qwen/Qwen2.5-Coder-7B-Instruct
+  endpoint: dynamo.TensorRTLLMWorker.generate
+  port: 8000
+  router: round-robin
+
+TensorRTLLMWorker:
+  served_model_name: Qwen/Qwen2.5-Coder-7B-Instruct
+  engine_args: /experiment/config/trtllm_engine.yaml
+  llmapi-disaggregated-config: /experiment/config/trtllm_disagg.yaml
+  router: round-robin
+  remote-prefill: true
+  min-prefill-workers: 2
+  ServiceArgs:
+    workers: 4
+    resources:
+      gpu: 1
+
+TensorRTLLMPrefillWorker:
+  engine_args: /experiment/config/trtllm_engine.yaml
+  llmapi-disaggregated-config: /experiment/config/trtllm_disagg.yaml
+  router: round-robin
+  ServiceArgs:
+    workers: 2
+    resources:
+      gpu: 2

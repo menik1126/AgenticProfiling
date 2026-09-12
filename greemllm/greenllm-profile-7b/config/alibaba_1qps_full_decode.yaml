@@ -1,0 +1,33 @@
+experiment: greenllm-full-decode-profile-alibaba-1qps-local-3090
+service_container: greenllm-prefillsplit-7b
+endpoint: http://127.0.0.1:8000/v1/chat/completions
+model: Qwen/Qwen2.5-Coder-7B-Instruct
+workload:
+  trace: /home/shenhaojia/energy/defaultnv-7b/data/traces/alibaba_1qps.jsonl
+  requests: 1732
+  duration_s: 1800
+  average_qps: 0.9622
+  notes: context lengths and concurrency levels are derived from the first trace
+reference_sm_frequency_mhz: 1950
+sm_frequencies_mhz: [600, 900, 1050, 1125, 1200, 1275, 1350, 1425, 1500, 1575, 1650, 1800, 1950]
+power_sample_interval_ms: 20
+idle_sample_duration_s: 5
+settle_after_clock_change_s: 2
+request_retries: 3
+request_retry_delay_s: 2
+gpu_groups:
+  decode: [0, 1, 2, 3]
+decode_latency:
+  # Short median, overall median, long median, and trace input P99.
+  prompt_lengths: [65, 395, 2021, 6131]
+  frequencies_mhz: [600, 900, 1200, 1500, 1800, 1950]
+  warmup_repetitions: 1
+  repetitions: 3
+  output_tokens: 128
+decode_power:
+  prompt_lengths: [65, 395, 2021, 6131]
+  warmup_repetitions: 1
+  concurrency_levels: [1, 4, 8, 16]
+  duration_s: 10
+  output_tokens: 256
+  tbt_slo_ms: 100
